@@ -227,18 +227,19 @@ void calcFunc() {
           case '/':
             if (operand2 != 0) {
               result = operand1 / operand2;
-            } else {
+            } 
+            else {
               Serial.println("Error: Division by zero!");
-              lcd.setCursor(0,2);
-              lcd.print("Error: Division by zero!");
+              lcd.setCursor(6,1);
+              lcd.print("Error!");
               input = "";
               break;
             }
             break;
           default:
             Serial.println("Invalid operation!");
-            lcd.setCursor(0,2);
-            lcd.print("Invalid operation!");            
+            lcd.setCursor(0,1);
+            lcd.print("Invalid!");            
             input = "";
             break;
         }
@@ -353,19 +354,23 @@ void keyPadFunc() {
   delay(KEYDELAY); // Add a small delay to avoid rapid button presse
 
 
-/*
-  if (keyPressed == 'p'){
-    Keyboard.printf("print");
-  }
-
-
-
-String keyPressedST(keyPressed);
-
-Keyboard.printf(keyPressedST);
-
-Keyboard.key_code_raw(KEY_ESC);
-*/ 
-
 }
 
+/*
+char keyMatrixPressed(){
+  char key = 0;
+  for (byte col = 0; col < numCols; col++) {
+    digitalWrite(colPins[col], LOW);
+    for (byte row = 0; row < numRows; row++) {
+      if (digitalRead(rowPins[row]) == LOW) {
+        key = keyMap[row][col];
+        while (digitalRead(rowPins[row]) == LOW) {
+          // Do nothing
+        }
+      }
+    }
+    digitalWrite(colPins[col], HIGH);
+  }
+  return key;
+}
+*/
