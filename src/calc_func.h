@@ -4,7 +4,7 @@
 
 void calcFunc()
 {
-
+    
     // Scan each column for button presses
     for (byte col = 0; col < numCols; col++)
     {
@@ -17,7 +17,7 @@ void calcFunc()
             // Check if the current button is pressed
             if (digitalRead(rowPins[row]) == LOW)
             {
-
+                
                 char key = (keyMap[row][col]);
 
                 if (key)
@@ -30,7 +30,9 @@ void calcFunc()
                     }
                     else if (key == '+' || key == '-' || key == '*' || key == '/')
                     {
-                        operand1 = input.toDouble(); // Store the first operand
+                        if (operand1 != 0 && result != 0) {operand1 = result;}
+                        if (operand1 == 0) {operand1 = input.toFloat();} // Store the first operand
+                        
                         operation = key;             // Store the operation
                         input = "";                  // Reset the input string
                         Serial.print(" ");
@@ -39,11 +41,13 @@ void calcFunc()
                         lcd.print(key);
                         Serial.print(" ");
                         lcd.print(" ");
+                        
                     }
                     else if (key == '=')
                     {
-                        operand2 = input.toDouble(); // Store the second operand
-                        double result = 0;
+                        operand2 = input.toFloat(); // Store the second operand
+                        if (operand2 == 0) {result = operand1;}
+                        result = 0;
 
                         // Perform the selected operation
                         switch (operation)
@@ -81,9 +85,11 @@ void calcFunc()
 
                         // Display the result
                         Serial.print(" = ");
-                        Serial.println(result);
-                        lcd.setCursor(0, 2);
-                        lcd.print(result);
+                        Serial.println(result, 8);
+                        lcd.clear();
+                        lcd.setCursor(0, 0);
+                        lcd.print("= ");
+                        lcd.print(removeZeros(String(result, 8)));
                         resultPrint = result;
 
                         input = "";        // Reset the input string
@@ -104,7 +110,7 @@ void calcFunc()
                         Serial.println(resultPrint);
                         // convert double to char
                         char resultStr[50];                    // Character array to store the converted value
-                        sprintf(resultStr, "%f", resultPrint); // Convert double to string
+                        sprintf(resultStr, "%g", resultPrint); // Convert double to string WAS % F
                         const char *resultType = resultStr;    // Now you can use resultType
                         Keyboard.printf(resultStr);
                     }
@@ -122,4 +128,21 @@ void calcFunc()
     }
 
     delay(KEYDELAY); // Add a small delay to avoid rapid button presse
+}
+
+String removeZeros(String str)
+{
+    // Remove trailing zeros from the string
+    while (str.endsWith("0"))
+    {
+        str.remove(str.length() - 1);
+    }
+
+    // Remove the decimal point if the string ends with it
+    if (str.endsWith("."))
+    {
+        str.remove(str.length() - 1);
+    }
+
+    return str;
 }

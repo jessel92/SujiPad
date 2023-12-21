@@ -19,8 +19,8 @@ byte colPins[COLS] = {5, 4, 3, 2};    // Connect to the column pinouts of the ke
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 String input = "";  // String to store the user input
-double operand1 = 0;  // First operand
-double operand2 = 0;  // Second operand
+float operand1 = 0;  // First operand
+float operand2 = 0;  // Second operand
 char operation = ' ';  // Operation to perform
 
 void setup() {
@@ -43,7 +43,7 @@ void loop() {
       Serial.print(" ");
     } else if (key == '=') {
       operand2 = input.toDouble(); // Store the second operand
-      double result = 0;
+      float result = 0;
       
       // Perform the selected operation
       switch (operation) {

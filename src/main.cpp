@@ -60,17 +60,7 @@ int status;
   lcd.clear();
 
   if (digitalRead(keyPadPin) == LOW){switchState = 2;}
-  if (digitalRead(calcPin) == LOW)
-    {
-      switchState = 1;
-      lcd.clear();
-      lcd.noCursor();
-      lcd.noBlink();
-      lcd.setCursor(0, 0);
-      lcd.print("   Calculator   ");
-      delay(2000);
-      lcd.clear();
-    }
+  if (digitalRead(calcPin) == LOW){switchState = 1;}
 
 }
 
@@ -87,7 +77,7 @@ void loop() {
       lcd.noBlink();
       lcd.setCursor(0, 0);
       lcd.print("   Calculator   ");
-      delay(5000);
+      delay(3000);
       lcd.clear();
       lcd.cursor();
       lcd.blink();

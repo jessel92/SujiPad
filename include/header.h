@@ -35,16 +35,18 @@ byte colPins[numCols] = {14, 9, 8, 7};        // Connect to the column pinouts o
 // char numPadKey;
 
 String input = "";    // String to store the user input
-double operand1 = 0;  // First operand
-double operand2 = 0;  // Second operand
+float operand1 = 0;  // First operand
+float operand2 = 0;  // Second operand
 char operation = ' '; // Operation to perform
+float result = 0;
+
 
 int switchState;
 
 int calcPin = 12;
 int keyPadPin = 13;
 
-double resultPrint = 0;
+float resultPrint = 0;
 
 char keyMap[numRows][numCols] = {
     {'p', 'a', 'b', 'n'},
@@ -58,5 +60,6 @@ void calcFunc();
 void keyPadFunc();
 char keyMatrixPressed();
 void keyDebounce();
+String removeZeros(String str);
 
 #endif
