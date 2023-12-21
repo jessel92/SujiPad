@@ -4,22 +4,32 @@
 
 char keyMatrixPressed()
 {
-  char keyPressed = 0;
-  for (byte col = 0; col < numCols; col++)
-  {
-    digitalWrite(colPins[col], LOW);
-    for (byte row = 0; row < numRows; row++)
+    char keyPressed = 0;
+
+    // Scan each column for button presses
+    for (byte col = 0; col < numCols; col++)
     {
-      if (digitalRead(rowPins[row]) == LOW)
-      {
-        keyPressed = keyMap[row][col];
-        while (digitalRead(rowPins[row]) == LOW)
+        // Activate the current column
+        digitalWrite(colPins[col], LOW);
+
+        // Scan each row in the current column
+        for (byte row = 0; row < numRows; row++)
         {
-          // Do nothing
+            // Check if the current button is pressed
+            if (digitalRead(rowPins[row]) == LOW)
+            {
+                // Define the key pressed
+                keyPressed = keyMap[row][col];
+
+                // Wait until the button is released
+                while (digitalRead(rowPins[row]) == LOW)
+                {
+                    // Do nothing
+                }
+            }
         }
-      }
+        // Deactivate the current column
+        digitalWrite(colPins[col], HIGH);
     }
-    digitalWrite(colPins[col], HIGH);
-  }
-  return keyPressed;
+    return keyPressed;
 }
