@@ -31,5 +31,16 @@ char keyMatrixPressed()
         // Deactivate the current column
         digitalWrite(colPins[col], HIGH);
     }
+    // Return the key pressed
+    Serial.println(keyPressed);
     return keyPressed;
+}
+
+void keyDebounce()
+{
+    // Debounce the key
+
+
+
+    delay(KEYDELAY); // Add a small delay to avoid rapid button presse
 }

@@ -57,5 +57,6 @@ char keyMap[numRows][numCols] = {
 void calcFunc();
 void keyPadFunc();
 char keyMatrixPressed();
+void keyDebounce();
 
 #endif

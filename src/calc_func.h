@@ -17,10 +17,6 @@ void calcFunc()
             // Check if the current button is pressed
             if (digitalRead(rowPins[row]) == LOW)
             {
-                // Print the pressed key to the Serial Monitor
-                Serial.println(keyMap[row][col]);
-
-                // lcd.print(keyMap[row][col]);
 
                 char key = (keyMap[row][col]);
 
