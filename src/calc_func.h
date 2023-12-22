@@ -32,13 +32,20 @@ void calcFunc()
                         if (operand1 != 0 && result != 0) {operand1 = result;} // Store the first operand as the result
                         else
                         if (operand1 == 0) {operand1 = input.toFloat();} // Store the first operand
-                        operation = key;                                 // Store the operation
-                        // if (operation == ' ' || key != oldOperation)
+
+                        //char oldOperation = operation; // Store the old operation
+                        operation = key;               // Store the new operation
+
+                        // if (oldOperation != ' ' || operation != oldOperation) // If the operation has changed
                         // {
+                        //     // Clear the previous operator from the LCD
                         //     lcd.moveCursorLeft();
                         //     lcd.moveCursorLeft();
-                        //     lcd.moveCursorLeft();
-                        //     oldOperation = operation; // Store the old operation
+                        //     // Print the new operator
+                        //     lcd.print(operation);
+                        //     lcd.moveCursorRight();
+                        //     lcd.moveCursorRight();
+
                         // }
 
                         input = ""; // Reset the input string
@@ -48,8 +55,6 @@ void calcFunc()
                         lcd.print(" ");
                         lcd.print(key);
                         lcd.print(" ");
-                        oldOperation = operation; // Store the old operation
-                        
                     }
                     else if (key == '=')
                     {
