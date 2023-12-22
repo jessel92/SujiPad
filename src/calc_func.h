@@ -4,7 +4,6 @@
 
 void calcFunc()
 {
-    
     // Scan each column for button presses
     for (byte col = 0; col < numCols; col++)
     {
@@ -30,17 +29,26 @@ void calcFunc()
                     }
                     else if (key == '+' || key == '-' || key == '*' || key == '/')
                     {
-                        if (operand1 != 0 && result != 0) {operand1 = result;}
+                        if (operand1 != 0 && result != 0) {operand1 = result;} // Store the first operand as the result
+                        else
                         if (operand1 == 0) {operand1 = input.toFloat();} // Store the first operand
-                        
-                        operation = key;             // Store the operation
-                        input = "";                  // Reset the input string
+                        operation = key;                                 // Store the operation
+                        // if (operation == ' ' || key != oldOperation)
+                        // {
+                        //     lcd.moveCursorLeft();
+                        //     lcd.moveCursorLeft();
+                        //     lcd.moveCursorLeft();
+                        //     oldOperation = operation; // Store the old operation
+                        // }
+
+                        input = ""; // Reset the input string
                         Serial.print(" ");
-                        lcd.print(" ");
                         Serial.print(key);
-                        lcd.print(key);
                         Serial.print(" ");
                         lcd.print(" ");
+                        lcd.print(key);
+                        lcd.print(" ");
+                        oldOperation = operation; // Store the old operation
                         
                     }
                     else if (key == '=')
@@ -94,6 +102,8 @@ void calcFunc()
 
                         input = "";        // Reset the input string
                         operand1 = result; // Store the result as the new first operand
+                        operation = ' ';
+                        
                     }
                     else if (key == 'C')
                     {

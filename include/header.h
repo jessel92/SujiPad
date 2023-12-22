@@ -37,7 +37,8 @@ byte colPins[numCols] = {14, 9, 8, 7};        // Connect to the column pinouts o
 String input = "";    // String to store the user input
 float operand1 = 0;  // First operand
 float operand2 = 0;  // Second operand
-char operation = ' '; // Operation to perform
+char operation = ' '; // Operation
+char oldOperation = ' '; // Old Operation 
 float result = 0;
 
 
