@@ -120,9 +120,9 @@ void calcFunc()
                         Serial.println(resultPrint);
                         // convert double to char
                         char resultStr[50];                    // Character array to store the converted value
-                        sprintf(resultStr, "%g", resultPrint); // Convert double to string WAS % F
+                        sprintf(resultStr, "%f", resultPrint); // Convert double to string WAS % F
                         const char *resultType = resultStr;    // Now you can use resultType
-                        Keyboard.printf(resultStr);
+                        Keyboard.printf(resultType);
                     }
                 }
                 // Wait until the button is released
