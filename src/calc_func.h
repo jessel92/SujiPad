@@ -33,28 +33,31 @@ void calcFunc()
                         else
                         if (operand1 == 0) {operand1 = input.toFloat();} // Store the first operand
 
-                        //char oldOperation = operation; // Store the old operation
+                        //oldOperation = operation; // Store the old operation
                         operation = key;               // Store the new operation
 
-                        // if (oldOperation != ' ' || operation != oldOperation) // If the operation has changed
+                        // if (operation != oldOperation) // If the operation has changed
                         // {
                         //     // Clear the previous operator from the LCD
                         //     lcd.moveCursorLeft();
                         //     lcd.moveCursorLeft();
+                        //     lcd.print("  ");
                         //     // Print the new operator
                         //     lcd.print(operation);
-                        //     lcd.moveCursorRight();
-                        //     lcd.moveCursorRight();
+                        //     lcd.print(" ");
+                        //     input = ""; // Reset the input string
+
 
                         // }
-
+                        // else{
                         input = ""; // Reset the input string
                         Serial.print(" ");
-                        Serial.print(key);
+                        Serial.print(operation);
                         Serial.print(" ");
                         lcd.print(" ");
-                        lcd.print(key);
+                        lcd.print(operation);
                         lcd.print(" ");
+                       //}
                     }
                     else if (key == '=')
                     {
@@ -127,7 +130,7 @@ void calcFunc()
                         char resultStr[50];                    // Character array to store the converted value
                         sprintf(resultStr, "%f", resultPrint); // Convert double to string WAS % F
                         const char *resultType = resultStr;    // Now you can use resultType
-                        Keyboard.printf(resultType);
+                        Keyboard.printf(removeZeros(String(result, 8)).c_str());
                     }
                 }
                 // Wait until the button is released

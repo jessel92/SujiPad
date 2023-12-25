@@ -41,6 +41,7 @@ char operation = ' '; // Operation
 char oldOperation = ' '; // Old Operation 
 float result = 0;
 
+String debugOp;
 
 int switchState;
 

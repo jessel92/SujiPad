@@ -77,7 +77,7 @@ void loop() {
       lcd.noBlink();
       lcd.setCursor(0, 0);
       lcd.print("   Calculator   ");
-      delay(3000);
+      delay(1000);
       lcd.clear();
       lcd.cursor();
       lcd.blink();
