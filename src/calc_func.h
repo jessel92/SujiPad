@@ -30,34 +30,33 @@ void calcFunc()
                     else if (key == '+' || key == '-' || key == '*' || key == '/')
                     {
                         if (operand1 != 0 && result != 0) {operand1 = result;} // Store the first operand as the result
-                        else
-                        if (operand1 == 0) {operand1 = input.toFloat();} // Store the first operand
+                         else{operand1 = input.toFloat();} // Store the first operand
 
-                        //oldOperation = operation; // Store the old operation
+                        oldOperation = operation; // Store the old operation
                         operation = key;               // Store the new operation
 
-                        // if (operation != oldOperation) // If the operation has changed
-                        // {
-                        //     // Clear the previous operator from the LCD
-                        //     lcd.moveCursorLeft();
-                        //     lcd.moveCursorLeft();
-                        //     lcd.print("  ");
-                        //     // Print the new operator
-                        //     lcd.print(operation);
-                        //     lcd.print(" ");
-                        //     input = ""; // Reset the input string
+                        if (operation != oldOperation || (firstOP) == false || oldOperation != " ") // If the operation has changed
+                        {
+                            // Clear the previous operator from the LCD
+                            lcd.moveCursorLeft();
+                            lcd.moveCursorLeft();
+                            lcd.print(" ");
+                            // Print the new operator
+                            lcd.print(operation);
+                            lcd.print(" ");
+                            input = ""; // Reset the input string
 
 
-                        // }
-                        // else{
+                        }
+                        else{
                         input = ""; // Reset the input string
                         Serial.print(" ");
                         Serial.print(operation);
                         Serial.print(" ");
+                        
                         lcd.print(" ");
-                        lcd.print(operation);
-                        lcd.print(" ");
-                       //}
+                       }
+                       
                     }
                     else if (key == '=')
                     {
@@ -111,6 +110,7 @@ void calcFunc()
                         input = "";        // Reset the input string
                         operand1 = result; // Store the result as the new first operand
                         operation = ' ';
+                        firstOP = false;
                         
                     }
                     else if (key == 'C')
@@ -120,6 +120,7 @@ void calcFunc()
                         operand1 = 0; // Reset the operands and operation
                         operand2 = 0;
                         operation = ' ';
+                        firstOP = false;
                         Serial.println("Cleared.");
                     }
                     // type result
