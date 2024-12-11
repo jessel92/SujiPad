@@ -3,7 +3,7 @@
 void keyPadFunc() {
   char key = keyMatrixPressed();
 
-  if (key != '\0') {
+  if (key != '\0' && key != ' ') { // Ignore space keys
     // Send corresponding keycode
     if (key == 'p') {
       Keyboard.printf("print");
@@ -21,11 +21,13 @@ void keyPadFunc() {
       Keyboard.key_code_raw(KEY_KPPLUS);
     } else if (key == '=') {
       Keyboard.key_code_raw(KEY_KPENTER);
-    } else if (key == '.') {
-      Keyboard.key_code_raw(KEY_KPDOT);
-    } else if (key >= '0' && key <= '9') {
-      Keyboard.key_code_raw(KEY_KP0 + (key - '0'));
-    } else if (key == 'a') {
+    }else if (key == '.'){
+      Keyboard.printf("."); // Send dot character
+      // Alternatively, use:
+      // Keyboard.write('.');
+    }else if (key >= '0' && key <= '9'){
+      Keyboard.printf("%c", key); // Sends the ASCII character
+    }else if (key == 'a') {
       Keyboard.key_code_raw(KEY_ESC);
     } else if (key == 'b') {
       Keyboard.key_code_raw(KEY_DELETE);

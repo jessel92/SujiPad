@@ -72,18 +72,30 @@ void loop() {
       lcd.setCursor(0, 1);
     }
     calcFunc();
-  } else if (digitalRead(keyPadPin) == LOW) {
-    if (switchState != 2) {
+  }
+  else if (digitalRead(keyPadPin) == LOW)
+  {
+    // **Keypad mode**
+    if (switchState != 2)
+    {
       switchState = 2;
       lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("   Keypad Mode   ");
-      delay(1000);
-      lcd.clear();
+
+      // **Display "Sujipad" centered on the first line**
+      lcd.setCursor((16 - 7) / 2, 0); // (16 - length of "Sujipad") / 2
+      lcd.print("Sujipad");
+
+      // **Display "Keypad Mode" centered on the second line**
+      lcd.setCursor((16 - 11) / 2, 1); // (16 - length of "Keypad Mode") / 2
+      lcd.print("Keypad Mode");
     }
     keyPadFunc();
-  } else {
-    if (switchState != 0) {
+  }
+  else
+  {
+    // Idle mode
+    if (switchState != 0)
+    {
       switchState = 0;
       lcd.clear();
       lcd.setCursor(0, 0);

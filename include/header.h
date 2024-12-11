@@ -35,10 +35,11 @@ int switchState = 0;
 char keyMap[numRows][numCols] = {
     {'p', 'a', 'b', 'n'},
     {'C', '*', '/', '-'},
-    {'7', '8', '9', '+'},
-    {'4', '5', '6', '='},
+    {'7', '8', '9', ' '},
+    {'4', '5', '6', '+'},
     {'1', '2', '3', ' '},
-    {'0', '.', ' ', ' '}};
+    {'0', ' ', '.', '='}
+};
 
 // HID Key Codes for special keys
 #define KEY_BACKSPACE 0x2A
