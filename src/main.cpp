@@ -19,96 +19,77 @@ Copyright Jesse Leventhal
 
 
 void setup() {
-  // put your setup code here, to run once:
-   Serial.begin(9600);
+  Serial.begin(9600);
 
-   pinMode(calcPin, INPUT_PULLUP);
-   pinMode(keyPadPin, INPUT_PULLUP);
+  pinMode(calcPin, INPUT_PULLUP);
+  pinMode(keyPadPin, INPUT_PULLUP);
 
-     // Set row pins as input and enable internal pull-up resistors
-     for (byte row = 0; row < numRows; row++)
-     {
-       pinMode(rowPins[row], INPUT_PULLUP);
-     }
-  
-  // Set column pins as output
+  // Initialize row pins
+  for (byte row = 0; row < numRows; row++) {
+    pinMode(rowPins[row], INPUT_PULLUP);
+  }
+
+  // Initialize column pins
   for (byte col = 0; col < numCols; col++) {
     pinMode(colPins[col], OUTPUT);
     digitalWrite(colPins[col], HIGH);
   }
- 
-int status;
 
-	status = lcd.begin(LCD_COLS, LCD_ROWS);
-	if(status) // non zero status means it was unsuccesful
-	{
-		// hd44780 has a fatalError() routine that blinks an led if possible
-		// begin() failed so blink error code using the onboard LED if possible
-		hd44780::fatalError(status); // does not return
-	}
+  // Initialize LCD
+  int status = lcd.begin(LCD_COLS, LCD_ROWS);
+  if (status) {
+    hd44780::fatalError(status);
+  }
 
-	// initalization was successful, the backlight should be on now
-
-	// Print Name on LCD
-  lcd.setCursor(1,0);
-	lcd.print("The Mad Noodle");
-  lcd.setCursor(4,2);
-	lcd.print("Suji-Pad");
- 
-  delay(5000);
-
+  // Display welcome message
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("  The Mad Noodle ");
+  lcd.setCursor(0, 1);
+  lcd.print("     Suji-Pad    ");
+  delay(2000);
   lcd.clear();
 
-  if (digitalRead(keyPadPin) == LOW){switchState = 2;}
-  if (digitalRead(calcPin) == LOW){switchState = 1;}
-
+  // Determine initial mode based on switch positions
+  if (digitalRead(keyPadPin) == LOW) {
+    switchState = 2;
+  } else if (digitalRead(calcPin) == LOW) {
+    switchState = 1;
+  } else {
+    switchState = 0;
+  }
 }
 
-
 void loop() {
-
-  if (digitalRead(calcPin) == LOW)
-  {
-
-    if (switchState == 1)
-    {
+  if (digitalRead(calcPin) == LOW) {
+    if (switchState != 1) {
+      switchState = 1;
       lcd.clear();
-      lcd.noCursor();
-      lcd.noBlink();
       lcd.setCursor(0, 0);
       lcd.print("   Calculator   ");
       delay(1000);
       lcd.clear();
-      lcd.cursor();
-      lcd.blink();
-      lcd.lineWrap();
-      switchState = 2;
-
-      input = "";   // Clear the input string
-      operand1 = 0; // Reset the operands and operation
-      operand2 = 0;
-      operation = ' ';
+      lcd.setCursor(0, 1);
     }
-
     calcFunc();
-  }
-
-  if (digitalRead(keyPadPin) == LOW)
-  {
-    if (switchState == 2)
-    {
+  } else if (digitalRead(keyPadPin) == LOW) {
+    if (switchState != 2) {
+      switchState = 2;
       lcd.clear();
-      lcd.noCursor();
-      lcd.noBlink();
-      lcd.setCursor(1, 0);
-      lcd.print("The Mad Noodle");
-      lcd.setCursor(4, 1);
-      lcd.print("Suji-Pad");
-      switchState = 1;
+      lcd.setCursor(0, 0);
+      lcd.print("   Keypad Mode   ");
+      delay(1000);
+      lcd.clear();
     }
-
     keyPadFunc();
+  } else {
+    if (switchState != 0) {
+      switchState = 0;
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("  The Mad Noodle ");
+      lcd.setCursor(0, 1);
+      lcd.print("     Suji-Pad    ");
+    }
   }
 }
-
-

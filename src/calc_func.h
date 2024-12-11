@@ -1,152 +1,76 @@
 #include "header.h"
 
-// Calculator FUNCTION ============================================================================================================
+void calcFunc() {
+  char key = keyMatrixPressed();
 
-void calcFunc()
-{
-    // Scan each column for button presses
-    for (byte col = 0; col < numCols; col++)
-    {
-        // Activate the current column
-        digitalWrite(colPins[col], LOW);
-
-        // Scan each row in the current column
-        for (byte row = 0; row < numRows; row++)
+  if (key != '\0') {
+    if (key >= '0' && key <= '9') {
+      input += key;
+      lcd.print(key);
+    } else if (key == '.') {
+        if (input.indexOf('.') == -1)
         {
-            // Check if the current button is pressed
-            if (digitalRead(rowPins[row]) == LOW)
-            {
-                
-                char key = (keyMap[row][col]);
+            input += key;
+            lcd.print(key);
+        }
+    } else if (key == 'C') {
+      // Clear input and reset calculator
+      input = "";
+      operand1 = 0;
+      operand2 = 0;
+      operation = '\0';
+      lcd.clear();
+    } else if (key == '+' || key == '-' || key == '*' || key == '/') {
+      if (input.length() > 0) {
+        operand1 = input.toFloat();
+        input = "";
+        operation = key;
+        lcd.print(key);
+      }
+    } else if (key == '=') {
+      if (input.length() > 0 && operation != '\0') {
+        operand2 = input.toFloat();
+        float result = 0;
 
-                if (key)
-                {
-                    if ((key >= '0' && key <= '9') || key == '.')
-                    {
-                        input += key;      // Append the digit to the input string
-                        Serial.print(key); // Echo the key to the Serial Monitor
-                        lcd.print(key);
-                    }
-                    else if (key == '+' || key == '-' || key == '*' || key == '/')
-                    {
-                        if (operand1 != 0 && result != 0) {operand1 = result;} // Store the first operand as the result
-                         else{operand1 = input.toFloat();} // Store the first operand
-
-                        oldOperation = operation; // Store the old operation
-                        operation = key;               // Store the new operation
-
-                        if (operation != oldOperation || (firstOP) == false || oldOperation != " ") // If the operation has changed
-                        {
-                            // Clear the previous operator from the LCD
-                            lcd.moveCursorLeft();
-                            lcd.moveCursorLeft();
-                            lcd.print(" ");
-                            // Print the new operator
-                            lcd.print(operation);
-                            lcd.print(" ");
-                            input = ""; // Reset the input string
-
-
-                        }
-                        else{
-                        input = ""; // Reset the input string
-                        Serial.print(" ");
-                        Serial.print(operation);
-                        Serial.print(" ");
-                        
-                        lcd.print(" ");
-                       }
-                       
-                    }
-                    else if (key == '=')
-                    {
-                        operand2 = input.toFloat(); // Store the second operand
-                        if (operand2 == 0) {result = operand1;}
-                        result = 0;
-
-                        // Perform the selected operation
-                        switch (operation)
-                        {
-                        case '+':
-                            result = operand1 + operand2;
-                            break;
-                        case '-':
-                            result = operand1 - operand2;
-                            break;
-                        case '*':
-                            result = operand1 * operand2;
-                            break;
-                        case '/':
-                            if (operand2 != 0)
-                            {
-                                result = operand1 / operand2;
-                            }
-                            else
-                            {
-                                Serial.println("Error: Division by zero!");
-                                lcd.setCursor(6, 1);
-                                lcd.print("Error!");
-                                input = "";
-                                break;
-                            }
-                            break;
-                        default:
-                            Serial.println("Invalid operation!");
-                            lcd.setCursor(0, 1);
-                            lcd.print("Invalid!");
-                            input = "";
-                            break;
-                        }
-
-                        // Display the result
-                        Serial.print(" = ");
-                        Serial.println(result, 8);
-                        lcd.clear();
-                        lcd.setCursor(0, 0);
-                        lcd.print("= ");
-                        lcd.print(removeZeros(String(result, 8)));
-                        resultPrint = result;
-
-                        input = "";        // Reset the input string
-                        operand1 = result; // Store the result as the new first operand
-                        operation = ' ';
-                        firstOP = false;
-                        
-                    }
-                    else if (key == 'C')
-                    {
-                        lcd.clear();
-                        input = "";   // Clear the input string
-                        operand1 = 0; // Reset the operands and operation
-                        operand2 = 0;
-                        operation = ' ';
-                        firstOP = false;
-                        Serial.println("Cleared.");
-                    }
-                    // type result
-                    else if (key == 'p')
-                    {
-                        Serial.println(resultPrint);
-                        // convert double to char
-                        char resultStr[50];                    // Character array to store the converted value
-                        sprintf(resultStr, "%f", resultPrint); // Convert double to string WAS % F
-                        const char *resultType = resultStr;    // Now you can use resultType
-                        Keyboard.printf(removeZeros(String(result, 8)).c_str());
-                    }
-                }
-                // Wait until the button is released
-                while (digitalRead(rowPins[row]) == LOW)
-                {
-                    // Do nothing
-                }
+        switch (operation) {
+          case '+':
+            result = operand1 + operand2;
+            break;
+          case '-':
+            result = operand1 - operand2;
+            break;
+          case '*':
+            result = operand1 * operand2;
+            break;
+          case '/':
+            if (operand2 != 0) {
+              result = operand1 / operand2;
+            } else {
+              lcd.clear();
+              lcd.print(" Error: Divide  ");
+              lcd.setCursor(0, 1);
+              lcd.print("   By Zero!     ");
+              delay(2000);
+              lcd.clear();
+              input = "";
+              operand1 = 0;
+              operand2 = 0;
+              operation = '\0';
+              return;
             }
+            break;
         }
 
-        // Deactivate the current column
-        digitalWrite(colPins[col], HIGH);
+        lcd.clear();
+        lcd.print("= ");
+        lcd.print(result);
+        operand1 = result;
+        input = "";
+        operation = '\0';
+        lcd.setCursor(0, 1);
+      }
     }
-
-    delay(KEYDELAY); // Add a small delay to avoid rapid button presse
+  }
 }
 
 String removeZeros(String str)
