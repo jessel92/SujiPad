@@ -5,8 +5,8 @@
 #include <PluggableUSBHID.h>
 #include <USBKeyboard.h>
 #include <Wire.h>
-#include <hd44780.h>                       // Main hd44780 header
-#include <hd44780ioClass/hd44780_I2Cexp.h> // I2C expander I/O class header
+#include <hd44780.h>
+#include <hd44780ioClass/hd44780_I2Cexp.h>
 
 // Initialize USB Keyboard and LCD
 USBKeyboard Keyboard;
@@ -26,9 +26,9 @@ int calcPin = 12;
 int keyPadPin = 13;
 
 // Global Variables
-String input = "";   // User input string
-float operand1 = 0;  // First operand
-float operand2 = 0;  // Second operand
+String input = "";     // User input string
+float operand1 = 0;    // First operand
+float operand2 = 0;    // Second operand
 char operation = '\0'; // Current operation
 int switchState = 0;
 
@@ -39,6 +39,30 @@ char keyMap[numRows][numCols] = {
     {'4', '5', '6', '='},
     {'1', '2', '3', ' '},
     {'0', '.', ' ', ' '}};
+
+// HID Key Codes for special keys
+#define KEY_BACKSPACE 0x2A
+#define KEY_TAB 0x2B
+#define KEY_ENTER 0x28
+#define KEY_ESC 0x29
+#define KEY_DELETE 0x4C
+#define KEY_NUMLOCK 0x53
+#define KEY_KPSLASH 0x54
+#define KEY_KPASTERISK 0x55
+#define KEY_KPMINUS 0x56
+#define KEY_KPPLUS 0x57
+#define KEY_KPENTER 0x58
+#define KEY_KPDOT 0x63
+#define KEY_KP0 0x62
+#define KEY_KP1 0x59
+#define KEY_KP2 0x5A
+#define KEY_KP3 0x5B
+#define KEY_KP4 0x5C
+#define KEY_KP5 0x5D
+#define KEY_KP6 0x5E
+#define KEY_KP7 0x5F
+#define KEY_KP8 0x60
+#define KEY_KP9 0x61
 
 // Function Declarations
 void calcFunc();
