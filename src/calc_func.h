@@ -22,16 +22,6 @@ void calcFunc()
                 lcd.print(key);
             }
         }
-        else if (key == 'C')
-        {
-            // Clear input and reset calculator
-            input = "";
-            operand1 = 0;
-            operand2 = 0;
-            operation = '\0';
-            result = 0; // Reset the result
-            lcd.clear();
-        }
         else if (key == '+' || key == '-' || key == '*' || key == '/')
         {
             if (input.length() > 0)
@@ -93,12 +83,44 @@ void calcFunc()
         }
         else if (key == 'p')
         {
-            // **Send the result via Keyboard**
-            const char *cstr = result;
-            String resultString(cstr);
-            // Now myString is "Hello"
+            // Send the result as a const char string
+            char resultStr[10];
+            snprintf(resultStr, sizeof(resultStr), "%.2f", result);
+            Keyboard.printf(resultStr);
 
-            Keyboard.printf(String(result));
+            // Set result as the first operand for the next calculation
+            operand1 = result;
+            input = "";  // Clear input to start a new calculation
+
+            lcd.clear();
+            lcd.print("Result sent: ");
+            lcd.print(resultStr);
+        }
+        else if (key == 'b')
+        {
+            // Clear all inputs and reset calculator
+            input = "";
+            operand1 = 0;
+            operand2 = 0;
+            operation = '\0';
+            result = 0;
+            lcd.clear();
+        }
+        else if (key == 'c')
+        {
+            // Backspace the last character
+            if (input.length() > 0)
+            {
+                input.remove(input.length() - 1);
+                lcd.setCursor(0, 0);
+                lcd.print(input);
+
+                // Optionally, clear remaining characters on the LCD line
+                for (int i = input.length(); i < 16; i++) {
+                    lcd.print(" ");
+                }
+                lcd.setCursor(input.length(), 0);
+            }
         }
     }
 }

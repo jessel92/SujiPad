@@ -7,7 +7,7 @@ void keyPadFunc() {
     // Send corresponding keycode
     if (key == 'p') {
       Keyboard.printf("print");
-    } else if (key == 'C') {
+    } else if (key == 'c') {
       Keyboard.key_code_raw(KEY_BACKSPACE);
     } else if (key == 'n') {
       Keyboard.key_code_raw(KEY_NUMLOCK);

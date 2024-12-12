@@ -9,7 +9,7 @@ char keys [ROWS] [COLS] = {
   {'7', '8', '9', '/'},
   {'4', '5', '6', '*'},
   {'1', '2', '3', '-'},
-  {'C', '0', '=', '+'}
+  {'c', '0', '=', '+'}
 };
 byte rowPins[ROWS] = {13 ,12 ,11 ,10};
 byte colPins[COLS] = {9, 8, 7, 6};
@@ -92,7 +92,7 @@ void loop(){
       lcd.print(answer);
       lcd.noAutoscroll();
   }
-  else if (key != NO_KEY && key == 'C'){
+  else if (key != NO_KEY && key == 'c'){
     lcd.clear();
     presentValue = false;
     final = false;

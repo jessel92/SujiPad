@@ -9,7 +9,7 @@ char keys[ROWS][COLS] = {
   {'7', '8', '9', '/'},
   {'4', '5', '6', '*'},
   {'1', '2', '3', '-'},
-  {'C', '0', '=', '+'}
+  {'c', '0', '=', '+'}
 };
 
 byte rowPins[ROWS] = {9, 8, 7, 6};    // Connect to the row pinouts of the keypad
@@ -77,7 +77,7 @@ void loop() {
       
       input = ""; // Reset the input string
       operand1 = result; // Store the result as the new first operand
-    } else if (key == 'C') {
+    } else if (key == 'c') {
       input = ""; // Clear the input string
       operand1 = 0; // Reset the operands and operation
       operand2 = 0;
