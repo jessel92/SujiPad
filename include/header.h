@@ -32,6 +32,10 @@ float operand2 = 0;    // Second operand
 char operation = '\0'; // Current operation
 int switchState = 0;
 
+// Add mode enumeration and currentMode variable
+enum Mode { CALCULATOR, KEYPAD };
+Mode currentMode = CALCULATOR; // Initialize to CALCULATOR mode
+
 char keyMap[numRows][numCols] = {
     {'p', 'a', 'b', 'n'},
     {'c', '*', '/', '-'},

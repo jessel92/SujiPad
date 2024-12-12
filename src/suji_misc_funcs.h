@@ -35,8 +35,5 @@ char keyMatrixPressed() {
 void keyDebounce()
 {
     // Debounce the key
-
-
-
-    delay(KEYDELAY); // Add a small delay to avoid rapid button presse
+    delay(KEYDELAY); // Add a small delay to avoid rapid button presses
 }
