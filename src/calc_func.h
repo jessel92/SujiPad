@@ -15,14 +15,16 @@ void calcFunc()
         if (key >= '0' && key <= '9')
         {
             input += key;
-            lcd.print(key);
+            u8g2.drawStr(0, 10, input.c_str()); // Use u8g2.drawStr
+            u8g2.sendBuffer();
         }
         else if (key == '.')
         {
             if (input.indexOf('.') == -1)
             {
                 input += key;
-                lcd.print(key);
+                u8g2.drawStr(0, 10, input.c_str());
+                u8g2.sendBuffer();
             }
         }
         else if (key == '+' || key == '-' || key == '*' || key == '/')
@@ -32,7 +34,10 @@ void calcFunc()
                 operand1 = input.toFloat();
                 input = "";
                 operation = key;
-                lcd.print(key);
+
+                char opStr[2] = {operation, '\0'};
+                u8g2.drawStr(0, 10, opStr);
+                u8g2.sendBuffer();
             }
             else
             {
@@ -40,22 +45,32 @@ void calcFunc()
                 {
                     // Update display to show "= result [operator]"
                     operation = key;
-                    lcd.clear();
-                    lcd.print("= ");
-                    lcd.print(result);
-                    lcd.print(" ");
-                    lcd.print(operation);
+                    u8g2.clearBuffer();
+
+                    char resultStr[10];
+                    snprintf(resultStr, sizeof(resultStr), "%.2f", result);
+
+                    // Calculate positions for centering
+                    int centerX = (128 - strlen("= ") * 8 - strlen(resultStr) * 8 - 8) / 2;
+                    u8g2.drawStr(centerX, 20, "= ");
+                    u8g2.drawStr(centerX + 16, 20, resultStr);
+
+                    char opStr[2] = {operation, '\0'};
+                    u8g2.drawStr(centerX + 32, 20, opStr);
+                    u8g2.sendBuffer();
+
                     pPressed = false;
                 }
                 else
                 {
                     // If no new input, update the operation symbol
                     operation = key;
-                    lcd.setCursor(0, 0);
-                    lcd.print("= ");
-                    lcd.print(result);
-                    lcd.print(" ");
-                    lcd.print(operation);
+                    u8g2.clearBuffer();
+
+                    char displayStr[30];
+                    snprintf(displayStr, sizeof(displayStr), "= %.2f %c", result, operation);
+                    u8g2.drawStr(0, 10, displayStr);
+                    u8g2.sendBuffer();
                 }
             }
         }
@@ -83,12 +98,13 @@ void calcFunc()
                     }
                     else
                     {
-                        lcd.clear();
-                        lcd.print(" Error: Divide  ");
-                        lcd.setCursor(0, 1);
-                        lcd.print("   By Zero!     ");
+                        u8g2.clearBuffer();
+                        u8g2.drawStr(0, 10, " Error: Divide  ");
+                        u8g2.drawStr(0, 30, "   By Zero!     ");
+                        u8g2.sendBuffer();
                         delay(2000);
-                        lcd.clear();
+                        u8g2.clearBuffer();
+                        u8g2.sendBuffer();
                         input = "";
                         operand1 = 0;
                         operand2 = 0;
@@ -99,13 +115,14 @@ void calcFunc()
                     break;
                 }
 
-                lcd.clear();
-                lcd.print("= ");
-                lcd.print(result);
+                u8g2.clearBuffer();
+                char resultDisplay[20];
+                snprintf(resultDisplay, sizeof(resultDisplay), "= %.2f", result);
+                u8g2.drawStr(0, 10, resultDisplay);
+                u8g2.sendBuffer();
                 operand1 = result;  // Set result as the first operand for the next calculation
                 input = "";
                 operation = '\0';
-                lcd.setCursor(0, 1);
             }
         }
         else if (key == 'p')
@@ -121,9 +138,10 @@ void calcFunc()
 
             pPressed = true; // Set the flag indicating 'p' was pressed
 
-            lcd.clear();
-            lcd.print("Result sent: ");
-            lcd.print(resultStr);
+            u8g2.clearBuffer();
+            u8g2.drawStr(0, 10, "Result sent:");
+            u8g2.drawStr(0, 20, resultStr);
+            u8g2.sendBuffer();
         }
         else if (key == 'b')
         {
@@ -133,7 +151,8 @@ void calcFunc()
             operand2 = 0;
             operation = '\0';
             result = 0;
-            lcd.clear();
+            u8g2.clearBuffer();
+            u8g2.sendBuffer();
         }
         else if (key == 'c')
         {
@@ -141,14 +160,15 @@ void calcFunc()
             if (input.length() > 0)
             {
                 input.remove(input.length() - 1);
-                lcd.setCursor(0, 0);
-                lcd.print(input);
+                u8g2.setCursor(0, 10);
+                u8g2.drawStr(0, 10, input.c_str());
 
-                // Optionally, clear remaining characters on the LCD line
-                for (int i = input.length(); i < LCD_COLS; i++) {
-                    lcd.print(" ");
+                // Optionally, clear remaining characters on the display
+                for (int i = input.length(); i < (LCD_COLS / 8); i++) { // Assuming 8 pixels per character
+                    char space = ' ';
+                    u8g2.drawStr(i * 8, 10, " ");
                 }
-                lcd.setCursor(input.length(), 0);
+                u8g2.sendBuffer();
             }
         }
         else if (key == 'a')
@@ -156,11 +176,16 @@ void calcFunc()
             // Toggle between CALCULATOR and KEYPAD modes
             if (currentMode == CALCULATOR) {
                 currentMode = KEYPAD;
-                lcd.clear();
-                lcd.setCursor((LCD_COLS - 7) / 2, 0); // Center "Sujipad"
-                lcd.print("Sujipad");
-                lcd.setCursor((LCD_COLS - 11) / 2, 1); // Center "Keypad Mode"
-                lcd.print("Keypad Mode");
+                u8g2.clearBuffer();
+                u8g2.drawStr((128 - 7 * 8) / 2, 10, "Sujipad"); // Center "Sujipad"
+                u8g2.drawStr((128 - 11 * 8) / 2, 30, "Keypad Mode"); // Center "Keypad Mode"
+                u8g2.sendBuffer();
+            }
+            else {
+                currentMode = CALCULATOR;
+                u8g2.clearBuffer();
+                u8g2.drawStr((128 - 11 * 8) / 2, 10, "Calculator"); // Center "Calculator"
+                u8g2.sendBuffer();
             }
         }
     }

@@ -22,6 +22,8 @@ char keyMatrixPressed() {
           }
           // Deactivate the current column
           digitalWrite(colPins[col], HIGH);
+          u8g2.drawStr(0, 10, input.c_str());
+          u8g2.sendBuffer();
           return keyPressed;
         }
       }
@@ -32,8 +34,8 @@ char keyMatrixPressed() {
   return keyPressed;
 }
 
-void keyDebounce()
-{
-    // Debounce the key
-    delay(KEYDELAY); // Add a small delay to avoid rapid button presses
-}
+// void keyDebounce()
+// {
+//     // Debounce the key
+//     delay(KEYDELAY); // Add a small delay to avoid rapid button presses
+// }

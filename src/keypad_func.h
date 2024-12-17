@@ -1,3 +1,4 @@
+// Example for other files
 #include "header.h"
 
 void keyPadFunc() {
@@ -8,20 +9,16 @@ void keyPadFunc() {
       // Toggle between KEYPAD and CALCULATOR modes
       if (currentMode == KEYPAD) {
         currentMode = CALCULATOR;
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("   Calculator   ");
-        delay(1000);
-        lcd.clear();
+        u8g2.clearBuffer();
+        u8g2.drawStr((128 - 11 * 8) / 2, 10, "Calculator"); // Center "Calculator"
+        u8g2.sendBuffer();
       }
       else {
         currentMode = KEYPAD;
-        lcd.clear();
-        lcd.setCursor((LCD_COLS - 7) / 2, 0); // Center "Sujipad"
-        lcd.print("Sujipad");
-        lcd.setCursor((LCD_COLS - 11) / 2, 1); // Center "Keypad Mode"
-        lcd.print("Keypad Mode");
-
+        u8g2.clearBuffer();
+        u8g2.drawStr((128 - 7 * 8) / 2, 10, "Sujipad"); // Center "Sujipad"
+        u8g2.drawStr((128 - 11 * 8) / 2, 30, "Keypad Mode"); // Center "Keypad Mode"
+        u8g2.sendBuffer();
       }
     }
     else {
@@ -43,10 +40,13 @@ void keyPadFunc() {
       } else if (key == '=') {
         Keyboard.key_code_raw(KEY_KPENTER);
       } else if (key == '.') {
+        u8g2.drawStr(0, 20, "."); // Display dot character
+        u8g2.sendBuffer();
         Keyboard.printf("."); // Send dot character
-        // Alternatively, use:
-        // Keyboard.write('.');
       } else if (key >= '0' && key <= '9') {
+        char numStr[2] = {key, '\0'};
+        u8g2.drawStr(0, 20, numStr); // Display the number
+        u8g2.sendBuffer();
         Keyboard.printf("%c", key); // Sends the ASCII character
       } else if (key == 'b') {
         Keyboard.key_code_raw(KEY_DELETE);

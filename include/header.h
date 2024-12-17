@@ -5,17 +5,18 @@
 #include <PluggableUSBHID.h>
 #include <USBKeyboard.h>
 #include <Wire.h>
-#include <hd44780.h>
-#include <hd44780ioClass/hd44780_I2Cexp.h>
+#include <U8g2lib.h> // Added U8g2 library
 
-// Initialize USB Keyboard and LCD
+// Initialize USB Keyboard
 USBKeyboard Keyboard;
-hd44780_I2Cexp lcd;
+
+// Declare u8g2 as an external instance
+extern U8G2_SSD1309_128X64_NONAME0_F_HW_I2C u8g2;
 
 // Constants
 #define KEYDELAY 70
-const int LCD_COLS = 16;
-const int LCD_ROWS = 2;
+const int LCD_COLS = 128; // Updated for SSD1309 (128 pixels wide)
+const int LCD_ROWS = 64;  // Updated for SSD1309 (64 pixels tall)
 const byte numRows = 6;
 const byte numCols = 4;
 

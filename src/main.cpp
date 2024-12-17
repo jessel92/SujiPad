@@ -3,10 +3,9 @@
 The Mad Noodle | Sūji (数字)
 Firmware 
 
-(ALPHA)0.0.5
-12/11/2024
+(ALPHA)0.0.2
+12/20/2023
 
-Copyright Jesse Leventhal
 ****************************************************/
 #include <Arduino.h>
 
@@ -15,8 +14,8 @@ Copyright Jesse Leventhal
 #include "keypad_func.h"
 #include "suji_misc_funcs.h"
 
-// put function declarations here:
-
+// Define the u8g2 instance
+U8G2_SSD1309_128X64_NONAME0_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE); // Corrected class name
 
 void setup() {
   Serial.begin(9600);
@@ -32,20 +31,17 @@ void setup() {
     digitalWrite(colPins[col], HIGH);
   }
 
-  // Initialize LCD
-  int status = lcd.begin(LCD_COLS, LCD_ROWS);
-  if (status) {
-    hd44780::fatalError(status);
-  }
-
-  // Display welcome message
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("  The Mad Noodle ");
-  lcd.setCursor(0, 1);
-  lcd.print("     Suji-Pad    ");
+  // Initialize U8g2
+  u8g2.begin();
+  u8g2.enableUTF8Print(); // Enable UTF8 support for print() if needed
+  u8g2.clearBuffer();
+  u8g2.setFont(u8g2_font_ncenB08_tr); // Choose a suitable font
+  u8g2.drawStr(0, 10, "  The Mad Noodle ");
+  u8g2.drawStr(0, 30, "     Suji-Pad    ");
+  u8g2.sendBuffer();
   delay(2000);
-  lcd.clear();
+  u8g2.clearBuffer();
+  u8g2.sendBuffer();
 
   // Initialize to CALCULATOR mode
   currentMode = CALCULATOR;
